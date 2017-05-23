@@ -182,6 +182,16 @@ func (tl *List) GetAll(typ byte) []TLV {
 	return ts
 }
 
+// GetThemAll checks the TLVList, returning a slice containing all objects.
+// If no object has the requested type, an empty slice is returned.
+func (tl *List) GetThemAll() []TLV {
+	ts := make([]TLV, 0)
+	for e := tl.objects.Front(); e != nil; e = e.Next() {
+		ts = append(ts, e.Value.(TLV))
+	}
+	return ts
+}
+
 // Remove removes all objects with the requested type.
 // It returns a count of the number of removed objects.
 func (tl *List) Remove(typ byte) int {

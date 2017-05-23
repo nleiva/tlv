@@ -6,7 +6,10 @@
 
 It might be found in a binary file format or a network protocol.
 
-This is a fork from [github.com/Akagi201/tlv](https://github.com/Akagi201/tlv), I just needed to change the Lenght to just 1 byte.
+This is a fork from [github.com/Akagi201/tlv](https://github.com/Akagi201/tlv). Just some minor changes:
+
+- Set TLV Lenght to just 1 byte.
+- Introduced GetThemAll(), to get a slice with all TLVs found
 
 ## Brief
 
