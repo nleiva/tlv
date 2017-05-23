@@ -12,13 +12,13 @@ import (
 // TLV represents a Type-Length-Value object.
 type TLV interface {
 	Type() byte
-	Length() int32
+	Length() int8
 	Value() []byte
 }
 
 type object struct {
 	typ byte
-	len int32
+	len int8
 	val []byte
 }
 
@@ -28,7 +28,7 @@ func (o *object) Type() byte {
 }
 
 // Length returns the object's type
-func (o *object) Length() int32 {
+func (o *object) Length() int8 {
 	return o.len
 }
 
@@ -66,7 +66,7 @@ var (
 func New(typ byte, val []byte) TLV {
 	tlv := new(object)
 	tlv.typ = typ
-	tlv.len = int32(len(val))
+	tlv.len = int8(len(val))
 	tlv.val = make([]byte, tlv.Length())
 	copy(tlv.val, val)
 	return tlv
@@ -98,7 +98,7 @@ func ReadObject(r io.Reader) (TLV, error) {
 	}
 	tlv.typ = typ
 
-	var length int32
+	var length int8
 	err = binary.Read(r, binary.BigEndian, &length)
 	if err != nil {
 		return nil, err
@@ -109,7 +109,7 @@ func ReadObject(r io.Reader) (TLV, error) {
 	l, err := r.Read(tlv.val)
 	if err != nil {
 		return nil, err
-	} else if int32(l) != tlv.Length() {
+	} else if int8(l) != tlv.Length() {
 		return tlv, ErrTLVRead
 	}
 
@@ -135,7 +135,7 @@ func WriteObject(tlv TLV, w io.Writer) error {
 	n, err := w.Write(tlv.Value())
 	if err != nil {
 		return err
-	} else if int32(n) != tlv.Length() {
+	} else if int8(n) != tlv.Length() {
 		return ErrTLVWrite
 	}
 
@@ -155,8 +155,8 @@ func NewList() *List {
 }
 
 // Length returns the number of objects int the TLVList.
-func (tl *List) Length() int32 {
-	return int32(tl.objects.Len())
+func (tl *List) Length() int8 {
+	return int8(tl.objects.Len())
 }
 
 // Get checks the TLVList for any object matching the type, It returns the first one found.

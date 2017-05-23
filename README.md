@@ -6,12 +6,14 @@
 
 It might be found in a binary file format or a network protocol.
 
+This is a fork from [github.com/Akagi201/tlv](https://github.com/Akagi201/tlv), I just needed to change the Lenght to just 1 byte.
+
 ## Brief
 
 One TLV Object:
 
 ```
- 1 Byte   4 Bytes  $Length Bytes
+ 1 Byte   1 Byte   $Length Bytes
 +-------+---------+-------------+
 | Type  | Length  |    Value    |
 +-------+---------+-------------+
@@ -20,7 +22,7 @@ One TLV Object:
 Serial TLV Objects:
 
 ```
- 1 Byte   4 Bytes  $Length Bytes 1 Byte   4 Bytes  $Length Bytes
+ 1 Byte   1 Byte   $Length Bytes 1 Byte   1 Byte   $Length Bytes
 +-------+---------+-------------+-------+---------+-------------+
 | Type  | Length  |    Value    | Type  | Length  |    Value    | ...
 +-------+---------+-------------+-------+---------+-------------+
@@ -29,13 +31,9 @@ Serial TLV Objects:
 Embedded TLV Objects:
 
 ```
- 1 Byte   4 Bytes          $Length Bytes
-                   1 Byte   4 Bytes  $Length Bytes
+ 1 Byte   1 Byte           $Length Bytes
+                   1 Byte   1 Byte   $Length Bytes
 +-------+---------+-------+---------+-------------+
 | Type  | Length  | Type  | Length  |    Value    |
 +-------+---------+-------+---------+-------------+
 ```
-
-## Wireshark Plugin
-* Put [wssdl](https://github.com/diacritic/wssdl/releases/download/v0.2.0/wssdl.lua) and [tlv.lua](/wireshark/tlv.lua) to `~/.config/wireshark/plugins`
-* The UDP port 8327 will be decoded as tlv protocol.
